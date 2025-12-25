@@ -28,9 +28,12 @@ yarn-error.log*
 # Scripts (optional - remove if you want to run them on Vercel)
 scripts/
 
-# Test files
+# Test files and templates (security)
 cloudinary-test.html
+cloudinary-test.html.example
 create-cloudinary-preset.sh
+create-cloudinary-preset.sh.example
+cleanup-git-history.sh
 
 # Documentation (optional)
 *.md
