@@ -4,16 +4,5 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
-  "regions": ["sin1"],
-  "env": {
-    "MONGODB_URI": "@mongodb_uri",
-    "JWT_SECRET": "@jwt_secret",
-    "CLOUDINARY_CLOUD_NAME": "@cloudinary_cloud_name",
-    "CLOUDINARY_API_KEY": "@cloudinary_api_key",
-    "CLOUDINARY_API_SECRET": "@cloudinary_api_secret",
-    "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME": "@cloudinary_cloud_name",
-    "NEXT_PUBLIC_APP_NAME": "নয়ন হার্ডওয়্যার",
-    "NEXT_PUBLIC_SHOP_NAME_BN": "নয়ন হার্ডওয়্যার",
-    "NEXT_PUBLIC_SHOP_NAME_EN": "Nayon Hardware"
-  }
+  "regions": ["sin1"]
 }
