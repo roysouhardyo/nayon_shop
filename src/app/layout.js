@@ -5,7 +5,7 @@ import { NotificationProvider } from "@/components/NotificationProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "নায়ন শপ | Nayon Shop - Inventory Management",
+  title: "নয়ন শপ | Noyon Shop - Inventory Management",
   description: "Machinery & Hardware Shop Inventory Management System",
   manifest: "/manifest.json",
 };
