@@ -98,31 +98,31 @@ export default function PublicInventoryPage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between gap-3 mb-4">
             <div
-              className="cursor-pointer"
+              className="cursor-pointer flex-shrink min-w-0"
               onClick={() => router.push("/public")}
             >
               <h1
-                className={`text-lg font-bold text-primary-600 hover:text-primary-700 transition-colors ${
+                className={`text-lg font-bold text-primary-600 hover:text-primary-700 transition-colors truncate ${
                   lang === "bn" ? "bengali-text" : ""
                 }`}
               >
                 {lang === "bn" ? "নয়ন হার্ডওয়্যার" : "Nayon Hardware"}
               </h1>
               <p
-                className={`text-sm text-gray-600 mt-1 ${
+                className={`text-sm text-gray-600 mt-1 truncate ${
                   lang === "bn" ? "bengali-text" : ""
                 }`}
               >
                 {t("publicView", lang)}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <LanguageSwitcher />
               <button
                 onClick={() => router.push("/login")}
-                className="btn btn-primary text-sm"
+                className="btn btn-primary text-sm whitespace-nowrap"
               >
                 {t("login", lang)}
               </button>
