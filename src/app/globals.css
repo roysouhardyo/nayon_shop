@@ -216,7 +216,7 @@ body {
 
   /* Ensure content doesn't hide behind bottom nav */
   main {
-    padding-bottom: calc(100px + env(safe-area-inset-bottom));
+    padding-bottom: calc(140px + env(safe-area-inset-bottom)) !important;
   }
 
   /* Mobile-friendly form inputs */

@@ -244,6 +244,87 @@ export default function ReportsPage() {
     };
   };
 
+  const getProductCountByCategory = () => {
+    if (!dashboardData?.products) return null;
+
+    const categoryCount = {};
+    dashboardData.products.forEach((product) => {
+      const category = product.category_bn || product.category_en || "অন্যান্য";
+      if (!categoryCount[category]) {
+        categoryCount[category] = 0;
+      }
+      categoryCount[category] += 1;
+    });
+
+    return {
+      labels: Object.keys(categoryCount),
+      datasets: [
+        {
+          label: lang === "bn" ? "পণ্যের সংখ্যা" : "Number of Products",
+          data: Object.values(categoryCount),
+          backgroundColor: [
+            "rgba(99, 102, 241, 0.8)",
+            "rgba(236, 72, 153, 0.8)",
+            "rgba(34, 197, 94, 0.8)",
+            "rgba(251, 146, 60, 0.8)",
+            "rgba(168, 85, 247, 0.8)",
+            "rgba(14, 165, 233, 0.8)",
+          ],
+          borderColor: [
+            "rgba(99, 102, 241, 1)",
+            "rgba(236, 72, 153, 1)",
+            "rgba(34, 197, 94, 1)",
+            "rgba(251, 146, 60, 1)",
+            "rgba(168, 85, 247, 1)",
+            "rgba(14, 165, 233, 1)",
+          ],
+          borderWidth: 2,
+        },
+      ],
+    };
+  };
+
+  const getProductProfitMargin = () => {
+    if (!dashboardData?.products) return null;
+
+    // Calculate profit margin for each product
+    const productProfits = dashboardData.products
+      .map((product) => {
+        const profit =
+          (product.sellingPrice || 0) - (product.purchasePrice || 0);
+        const profitMargin =
+          product.purchasePrice > 0
+            ? ((profit / product.purchasePrice) * 100).toFixed(1)
+            : 0;
+
+        return {
+          name: product.name_bn || product.name_en || "Unknown",
+          profit: profit,
+          profitMargin: parseFloat(profitMargin),
+          purchasePrice: product.purchasePrice || 0,
+          sellingPrice: product.sellingPrice || 0,
+        };
+      })
+      .filter((item) => item.profit > 0) // Only show products with positive profit
+      .sort((a, b) => b.profit - a.profit) // Sort by profit descending
+      .slice(0, 10); // Top 10 products
+
+    if (productProfits.length === 0) return null;
+
+    return {
+      labels: productProfits.map((p) => p.name),
+      datasets: [
+        {
+          label: lang === "bn" ? "লাভ (৳)" : "Profit (৳)",
+          data: productProfits.map((p) => p.profit),
+          backgroundColor: "rgba(34, 197, 94, 0.8)",
+          borderColor: "rgba(34, 197, 94, 1)",
+          borderWidth: 2,
+        },
+      ],
+    };
+  };
+
   const getSalesOverTime = () => {
     if (!dashboardData?.sales) return null;
 
@@ -457,6 +538,8 @@ export default function ReportsPage() {
             lang={lang}
             dashboardData={dashboardData}
             getStockByCategory={getStockByCategory}
+            getProductCountByCategory={getProductCountByCategory}
+            getProductProfitMargin={getProductProfitMargin}
             getSalesOverTime={getSalesOverTime}
             getStockStatus={getStockStatus}
             chartOptions={chartOptions}
@@ -486,12 +569,16 @@ function DashboardView({
   lang,
   dashboardData,
   getStockByCategory,
+  getProductCountByCategory,
+  getProductProfitMargin,
   getSalesOverTime,
   getStockStatus,
   chartOptions,
   doughnutOptions,
 }) {
   const stockByCategoryData = getStockByCategory();
+  const productCountByCategoryData = getProductCountByCategory();
+  const productProfitMarginData = getProductProfitMargin();
   const salesOverTimeData = getSalesOverTime();
   const stockStatusData = getStockStatus();
 
@@ -570,7 +657,7 @@ function DashboardView({
             >
               {lang === "bn" ? "ক্যাটাগরি অনুযায়ী স্টক" : "Stock by Category"}
             </h3>
-            <div style={{ height: "300px" }}>
+            <div className="mobile-chart">
               <Bar data={stockByCategoryData} options={chartOptions} />
             </div>
           </div>
@@ -586,8 +673,26 @@ function DashboardView({
             >
               {lang === "bn" ? "স্টক অবস্থা" : "Stock Status"}
             </h3>
-            <div style={{ height: "300px" }}>
+            <div className="mobile-chart">
               <Doughnut data={stockStatusData} options={doughnutOptions} />
+            </div>
+          </div>
+        )}
+
+        {/* Product Count by Category */}
+        {productCountByCategoryData && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3
+              className={`text-lg font-semibold text-gray-900 mb-4 ${
+                lang === "bn" ? "bengali-text" : ""
+              }`}
+            >
+              {lang === "bn"
+                ? "ক্যাটাগরি অনুযায়ী পণ্যের সংখ্যা"
+                : "Products Count by Category"}
+            </h3>
+            <div className="mobile-chart">
+              <Bar data={productCountByCategoryData} options={chartOptions} />
             </div>
           </div>
         )}
@@ -602,12 +707,54 @@ function DashboardView({
             >
               {lang === "bn" ? "গত ৭ দিনের বিক্রয়" : "Sales - Last 7 Days"}
             </h3>
-            <div style={{ height: "300px" }}>
+            <div className="mobile-chart">
               <Line data={salesOverTimeData} options={chartOptions} />
             </div>
           </div>
         )}
       </div>
+
+      {/* Product Profit Analysis - Full Width */}
+      {productProfitMarginData && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3
+              className={`text-lg font-semibold text-gray-900 ${
+                lang === "bn" ? "bengali-text" : ""
+              }`}
+            >
+              {lang === "bn"
+                ? "পণ্য লাভ বিশ্লেষণ (শীর্ষ ১০)"
+                : "Product Profit Analysis (Top 10)"}
+            </h3>
+            <div
+              className={`text-sm text-gray-600 ${
+                lang === "bn" ? "bengali-text" : ""
+              }`}
+            >
+              {lang === "bn"
+                ? "বিক্রয় মূল্য - ক্রয় মূল্য"
+                : "Selling Price - Purchase Price"}
+            </div>
+          </div>
+          <div className="mobile-chart">
+            <Bar
+              data={productProfitMarginData}
+              options={{
+                ...chartOptions,
+                indexAxis: "y", // Horizontal bar chart for better product name visibility
+                plugins: {
+                  ...chartOptions.plugins,
+                  legend: {
+                    display: true,
+                    position: "bottom",
+                  },
+                },
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
