@@ -26,6 +26,12 @@ yarn-error.log*
 .env*.local
 .env
 
+# security - files with credentials
+create-cloudinary-preset.sh
+cloudinary-test.html
+*-credentials.*
+*.secret
+
 # vercel
 .vercel
 

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cloudinary Upload Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+      }
+      .container {
+        border: 2px solid #ddd;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .warning {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+      input[type="file"] {
+        margin: 20px 0;
+      }
+      button {
+        background: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background: #ccc;
+      }
+      #result {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      img {
+        max-width: 100%;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Cloudinary Upload Test</h1>
+      
+      <div class="warning">
+        <strong>⚠️ INSTRUCTIONS:</strong>
+        <ol>
+          <li>Copy this file: <code>cp cloudinary-test.html.example cloudinary-test.html</code></li>
+          <li>Edit cloudinary-test.html and replace YOUR_CLOUD_NAME below</li>
+          <li>NEVER commit cloudinary-test.html to Git (it's in .gitignore)</li>
+        </ol>
+      </div>
+
+      <p><strong>Cloud Name:</strong> <span id="cloudName">YOUR_CLOUD_NAME</span></p>
+      <p><strong>Upload Preset:</strong> nayanshop</p>
+
+      <input type="file" id="fileInput" accept="image/*" />
+      <br />
+      <button id="uploadBtn" onclick="uploadImage()">Upload Image</button>
+
+      <div id="result"></div>
+    </div>
+
+    <script>
+      // TODO: Replace this with your actual Cloudinary cloud name
+      const CLOUD_NAME = "YOUR_CLOUD_NAME";
+      document.getElementById("cloudName").textContent = CLOUD_NAME;
+
+      async function uploadImage() {
+        const fileInput = document.getElementById("fileInput");
+        const resultDiv = document.getElementById("result");
+        const uploadBtn = document.getElementById("uploadBtn");
+
+        if (CLOUD_NAME === "YOUR_CLOUD_NAME") {
+          resultDiv.className = "error";
+          resultDiv.innerHTML = "<strong>Error:</strong> Please edit this file and set your CLOUD_NAME first!";
+          return;
+        }
+
+        if (!fileInput.files[0]) {
+          resultDiv.className = "error";
+          resultDiv.innerHTML = "Please select a file first!";
+          return;
+        }
+
+        uploadBtn.disabled = true;
+        resultDiv.innerHTML = "Uploading...";
+        resultDiv.className = "";
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+        formData.append("upload_preset", "nayanshop");
+        formData.append("folder", "products");
+
+        try {
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          const data = await response.json();
+          console.log("Response:", data);
+
+          if (data.error) {
+            resultDiv.className = "error";
+            resultDiv.innerHTML = `
+                        <strong>Error:</strong> ${data.error.message}<br>
+                        <small>This usually means the upload preset doesn't exist or is not configured as "unsigned".</small>
+                    `;
+          } else if (data.secure_url) {
+            resultDiv.className = "success";
+            resultDiv.innerHTML = `
+                        <strong>Success!</strong><br>
+                        <strong>URL:</strong> ${data.secure_url}<br>
+                        <img src="${data.secure_url}" alt="Uploaded image">
+                    `;
+          } else {
+            resultDiv.className = "error";
+            resultDiv.innerHTML = "Unknown error occurred";
+          }
+        } catch (error) {
+          resultDiv.className = "error";
+          resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+        } finally {
+          uploadBtn.disabled = false;
+        }
+      }
+    </script>
+  </body>
+</html>

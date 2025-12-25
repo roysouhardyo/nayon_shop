@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Cloudinary Upload Preset Creation Script
+# This creates an unsigned upload preset for the Nayon Shop application
+#
+# INSTRUCTIONS:
+# 1. Copy this file: cp create-cloudinary-preset.sh.example create-cloudinary-preset.sh
+# 2. Edit create-cloudinary-preset.sh and replace the placeholder values below
+# 3. Run: chmod +x create-cloudinary-preset.sh && ./create-cloudinary-preset.sh
+# 4. NEVER commit create-cloudinary-preset.sh to Git (it's in .gitignore)
+
+# TODO: Replace these with your actual Cloudinary credentials from .env.local
+CLOUD_NAME="YOUR_CLOUDINARY_CLOUD_NAME"
+API_KEY="YOUR_CLOUDINARY_API_KEY"
+API_SECRET="YOUR_CLOUDINARY_API_SECRET"
+
+echo "Creating Cloudinary upload preset 'nayanshop'..."
+
+curl -X POST \
+  "https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload_presets" \
+  -u "${API_KEY}:${API_SECRET}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "nayanshop",
+    "unsigned": true,
+    "folder": "products",
+    "tags": ["nayon_shop", "products"],
+    "allowed_formats": ["jpg", "png", "gif", "webp", "jpeg"],
+    "max_file_size": 10485760,
+    "transformation": [
+      {
+        "width": 1200,
+        "height": 1200,
+        "crop": "limit",
+        "quality": "auto:good"
+      }
+    ]
+  }'
+
+echo ""
+echo "Upload preset created successfully!"
+echo "Preset name: nayanshop"
+echo "Type: Unsigned (no authentication required from client)"
+echo "Folder: products"
