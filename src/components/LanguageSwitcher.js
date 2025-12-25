@@ -28,13 +28,13 @@ export default function LanguageSwitcher() {
       <span className="text-sm font-medium">
         {lang === "bn" ? (
           <>
-            <span className="mr-1">🇧🇩</span>
-            বাংলা
+            <span className="mr-1">🇬🇧</span>
+            English
           </>
         ) : (
           <>
-            <span className="mr-1">🇬🇧</span>
-            English
+            <span className="mr-1">🇧🇩</span>
+            বাংলা
           </>
         )}
       </span>

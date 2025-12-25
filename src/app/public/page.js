@@ -260,16 +260,84 @@ export default function PublicInventoryPage() {
           </div>
         ) : (
           <div className="responsive-grid">
-            {products.map((product) => (
-              <ProductCardWithCarousel
-                key={product._id}
-                product={product}
-                lang={lang}
-              />
+            {products.map((product, index) => (
+              <div key={product._id} className="stagger-item">
+                <ProductCardWithCarousel product={product} lang={lang} />
+              </div>
             ))}
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white mt-8 animate-fade-in border-t-4 border-primary-500">
+        <div className="max-w-7xl mx-auto px-4 py-6 md:py-8">
+          {/* Contact Information */}
+          <div className="text-center mb-4 md:mb-6">
+            <h3
+              className={`text-lg md:text-xl font-bold mb-3 md:mb-4 text-primary-400 ${
+                lang === "bn" ? "bengali-text" : ""
+              }`}
+            >
+              {lang === "bn" ? "যোগাযোগ করুন" : "Contact Us"}
+            </h3>
+            <div className="flex items-center justify-center gap-2 md:gap-3 bg-gray-800 rounded-lg py-3 px-4 md:py-4 md:px-6 max-w-sm md:max-w-md mx-auto border-2 border-primary-500/30 hover:border-primary-500 transition-all">
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6 text-primary-400 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              <a
+                href="tel:+8801931798504"
+                className="text-lg md:text-xl font-bold text-white hover:text-primary-300 transition-colors"
+              >
+                +880 1931-798504
+              </a>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="border-t border-gray-700 mb-4 md:mb-6"></div>
+
+          {/* Built with love */}
+          <div className="text-center space-y-2">
+            <p className="flex items-center justify-center gap-2 text-sm md:text-base">
+              <span
+                className={`font-medium ${lang === "bn" ? "bengali-text" : ""}`}
+              >
+                {lang === "bn" ? "ভালোবাসা দিয়ে তৈরি" : "Built with love"}
+              </span>
+              <span className="text-red-400 animate-pulse text-base md:text-lg">
+                ❤️
+              </span>
+            </p>
+            <p className="text-xs md:text-sm text-gray-400 italic">
+              {lang === "bn" ? "কারণ: অজানা" : "Reason: unknown"}
+            </p>
+            <p className="text-xs md:text-sm text-gray-500">
+              © {new Date().getFullYear()}{" "}
+              <span
+                className={`font-medium text-gray-300 ${
+                  lang === "bn" ? "bengali-text" : ""
+                }`}
+              >
+                {lang === "bn" ? "নয়ন হার্ডওয়্যার" : "Nayon Hardware"}
+              </span>
+              {lang === "bn"
+                ? " । সর্বস্বত্ব সংরক্ষিত"
+                : " • All rights reserved"}
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -31,7 +31,7 @@ export default function ProductCardWithCarousel({ product, lang }) {
       : product.name_en || product.name_bn;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden card-hover">
+    <div className="bg-white rounded-xl shadow-md border-[3px] border-primary-300 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:border-primary-500 cursor-pointer">
       {/* Product Image Carousel */}
       <div className="relative w-full h-48 bg-gray-100 group">
         {images.length > 0 ? (
@@ -174,7 +174,7 @@ export default function ProductCardWithCarousel({ product, lang }) {
         </p>
 
         {/* Brand & Model */}
-        <div className="space-y-1 mb-3">
+        <div className="space-y-1 mb-3 pb-3 border-b border-gray-200">
           {product.brand && (
             <div className="flex items-center text-sm">
               <span className="text-gray-500 w-16">
@@ -196,7 +196,7 @@ export default function ProductCardWithCarousel({ product, lang }) {
         </div>
 
         {/* Price */}
-        <div className="bg-gradient-to-r from-primary-50 to-green-50 rounded-lg p-3 mb-3">
+        <div className="bg-gradient-to-r from-primary-50 to-green-50 rounded-lg p-3 mb-3 border-2 border-primary-200">
           <p className="text-xs text-gray-600 mb-1">
             {lang === "bn" ? "মূল্য" : "Price"}
           </p>
@@ -207,7 +207,7 @@ export default function ProductCardWithCarousel({ product, lang }) {
         </div>
 
         {/* Current Stock */}
-        <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+        <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3 border-2 border-gray-300">
           <StockBadge
             quantity={product.stockQuantity}
             minimumStock={product.minimumStockLevel}

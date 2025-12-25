@@ -201,13 +201,13 @@ export default function InventoryPage() {
               <LanguageSwitcher />
               <button
                 onClick={() => setShowCategoryModal(true)}
-                className="btn btn-secondary text-sm"
+                className="hidden lg:flex btn btn-secondary text-sm"
               >
                 {lang === "bn" ? "ক্যাটাগরি ম্যানেজ করুন" : "Manage Categories"}
               </button>
               <button
                 onClick={() => setShowAddModal(true)}
-                className="btn btn-primary text-sm"
+                className="btn btn-primary text-sm whitespace-nowrap"
               >
                 + {t("add", lang)}
               </button>
@@ -333,17 +333,18 @@ export default function InventoryPage() {
           </div>
         ) : viewMode === "cards" ? (
           <div className="responsive-grid">
-            {products.map((product) => (
-              <ProductCard
-                key={product._id}
-                product={product}
-                lang={lang}
-                onEdit={() => {
-                  setSelectedProduct(product);
-                  setShowEditModal(true);
-                }}
-                onDelete={() => handleDeleteClick(product)}
-              />
+            {products.map((product, index) => (
+              <div key={product._id} className="stagger-item">
+                <ProductCard
+                  product={product}
+                  lang={lang}
+                  onEdit={() => {
+                    setSelectedProduct(product);
+                    setShowEditModal(true);
+                  }}
+                  onDelete={() => handleDeleteClick(product)}
+                />
+              </div>
             ))}
           </div>
         ) : (
@@ -479,7 +480,7 @@ function ProductCard({ product, lang, onEdit, onDelete }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden card-hover">
+    <div className="bg-white rounded-xl shadow-md border-[3px] border-primary-300 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] hover:border-primary-500">
       {/* Product Image Carousel */}
       <div className="relative w-full h-48 bg-gray-100 group">
         {images.length > 0 ? (
@@ -621,7 +622,7 @@ function ProductCard({ product, lang, onEdit, onDelete }) {
         </p>
 
         {/* Brand & Model */}
-        <div className="space-y-1 mb-3">
+        <div className="space-y-1 mb-3 pb-3 border-b border-gray-200">
           {product.brand && (
             <div className="flex items-center text-sm">
               <span className="text-gray-500 w-16">
@@ -643,12 +644,12 @@ function ProductCard({ product, lang, onEdit, onDelete }) {
         </div>
 
         {/* Part Code */}
-        <p className="text-xs text-gray-400 mb-3 font-mono bg-gray-50 px-2 py-1 rounded inline-block">
+        <p className="text-xs text-gray-400 mb-3 font-mono bg-gray-50 px-3 py-2 rounded border border-gray-300 inline-block">
           {product.partCode}
         </p>
 
         {/* Price */}
-        <div className="bg-gradient-to-r from-primary-50 to-green-50 rounded-lg p-3 mb-3">
+        <div className="bg-gradient-to-r from-primary-50 to-green-50 rounded-lg p-3 mb-3 border-2 border-primary-200">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-gray-600">
@@ -670,7 +671,7 @@ function ProductCard({ product, lang, onEdit, onDelete }) {
         </div>
 
         {/* Current Stock */}
-        <div className="flex items-center justify-between mb-4 bg-gray-50 rounded-lg p-3">
+        <div className="flex items-center justify-between mb-4 bg-gray-50 rounded-lg p-3 border-2 border-gray-300">
           <div className="flex items-center gap-2">
             <StockBadge
               quantity={product.stockQuantity}
