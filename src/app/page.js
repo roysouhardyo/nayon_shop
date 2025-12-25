@@ -24,7 +24,7 @@ export default function Home() {
       <div className="text-center">
         <div className="spinner mx-auto mb-4"></div>
         <h1 className="text-2xl font-bold text-gray-800 bengali-text">
-          নায়ন শপ
+          নয়ন শপ
         </h1>
         <p className="text-gray-600 mt-2">Loading...</p>
       </div>
