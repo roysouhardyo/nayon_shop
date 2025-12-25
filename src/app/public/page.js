@@ -99,9 +99,12 @@ export default function PublicInventoryPage() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
-            <div>
+            <div
+              className="cursor-pointer"
+              onClick={() => router.push("/public")}
+            >
               <h1
-                className={`text-2xl font-bold text-primary-600 ${
+                className={`text-lg font-bold text-primary-600 hover:text-primary-700 transition-colors ${
                   lang === "bn" ? "bengali-text" : ""
                 }`}
               >
