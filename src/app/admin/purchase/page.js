@@ -89,7 +89,7 @@ export default function PurchasePage() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-1 mr-2">
               <button
                 onClick={() => router.push("/admin")}
                 className="lg:hidden text-gray-600"
@@ -110,30 +110,39 @@ export default function PurchasePage() {
               </button>
               <div>
                 <h1
-                  className={`text-2xl font-bold text-gray-900 ${
+                  className={`text-base font-bold text-gray-900 ${
                     lang === "bn" ? "bengali-text" : ""
                   }`}
                 >
                   {t("purchase", lang)}
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs text-gray-600">
                   {lang === "bn" ? "স্টক ম্যানেজমেন্ট" : "Stock Management"}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
+              {/* Add Purchase button - hidden on mobile, shown on desktop */}
               <button
                 onClick={() => setShowPurchaseModal(true)}
-                className="btn btn-primary text-sm"
+                className="hidden lg:inline-flex btn btn-primary text-sm"
               >
                 + {t("addPurchase", lang)}
               </button>
             </div>
           </div>
 
+          {/* Mobile Add Purchase Button - Full width above filter tabs */}
+          <button
+            onClick={() => setShowPurchaseModal(true)}
+            className="lg:hidden w-full btn btn-primary text-base mb-3 py-3"
+          >
+            + {t("addPurchase", lang)}
+          </button>
+
           {/* Filter Tabs */}
-          <div className="flex gap-2 overflow-x-auto">
+          <div className="flex gap-2 overflow-x-auto pb-2">
             <button
               onClick={() => setFilterType("all")}
               className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap ${
