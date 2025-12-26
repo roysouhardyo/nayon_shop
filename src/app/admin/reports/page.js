@@ -136,20 +136,37 @@ export default function ReportsPage() {
       const data = await response.json();
 
       if (data.success) {
-        // Open HTML in new window for printing/PDF
-        const printWindow = window.open("", "_blank");
-        printWindow.document.write(data.html);
-        printWindow.document.close();
+        // Create a hidden iframe for printing
+        const iframe = document.createElement("iframe");
+        iframe.style.position = "fixed";
+        iframe.style.right = "0";
+        iframe.style.bottom = "0";
+        iframe.style.width = "0";
+        iframe.style.height = "0";
+        iframe.style.border = "none";
+        document.body.appendChild(iframe);
 
-        // Trigger print dialog
-        setTimeout(() => {
-          printWindow.print();
-        }, 500);
+        // Write HTML content to iframe
+        const iframeDoc = iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(data.html);
+        iframeDoc.close();
+
+        // Wait for content to load, then trigger print
+        iframe.onload = () => {
+          setTimeout(() => {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+
+            // Remove iframe after printing
+            setTimeout(() => {
+              document.body.removeChild(iframe);
+            }, 1000);
+          }, 500);
+        };
 
         notification.success(
-          lang === "bn"
-            ? "রিপোর্ট তৈরি হয়েছে"
-            : "Report generated successfully"
+          lang === "bn" ? "রিপোর্ট ডাউনলোড হচ্ছে" : "Report downloading"
         );
       } else {
         notification.error(

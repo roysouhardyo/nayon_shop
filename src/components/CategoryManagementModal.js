@@ -31,11 +31,8 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
       if (data.success) {
         // Sort categories: 'others' always at the end, rest by order
         const sortedCategories = data.categories.sort((a, b) => {
-          // If 'a' is 'others', it should come after 'b'
           if (a.id === "others") return 1;
-          // If 'b' is 'others', it should come after 'a'
           if (b.id === "others") return -1;
-          // Otherwise sort by order
           return (a.order || 999) - (b.order || 999);
         });
         setCategories(sortedCategories);
@@ -204,9 +201,9 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
     >
       <div className="space-y-4">
         {/* Add Category Button */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <h3
-            className={`text-lg font-semibold ${
+            className={`text-base sm:text-lg font-semibold ${
               lang === "bn" ? "bengali-text" : ""
             }`}
           >
@@ -214,7 +211,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
           </h3>
           <button
             onClick={() => setShowAddCategory(!showAddCategory)}
-            className="btn btn-primary text-sm"
+            className="btn btn-primary text-sm w-full sm:w-auto py-3 sm:py-2"
           >
             + {lang === "bn" ? "নতুন ক্যাটাগরি" : "New Category"}
           </button>
@@ -227,11 +224,15 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
             className="bg-blue-50 p-4 rounded-lg space-y-3"
           >
             <h4
-              className={`font-semibold ${lang === "bn" ? "bengali-text" : ""}`}
+              className={`font-semibold text-sm sm:text-base ${
+                lang === "bn" ? "bengali-text" : ""
+              }`}
             >
               {lang === "bn" ? "নতুন ক্যাটাগরি যোগ করুন" : "Add New Category"}
             </h4>
-            <div className="grid grid-cols-3 gap-3">
+
+            {/* Mobile: Stack vertically, Desktop: 3 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   {lang === "bn" ? "বাংলা নাম" : "Bangla Name"} *
@@ -243,7 +244,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                   onChange={(e) =>
                     setFormData({ ...formData, name_bn: e.target.value })
                   }
-                  className="input bengali-text"
+                  className="input bengali-text text-base"
                   placeholder="যেমন: মোটরসাইকেল পার্টস"
                 />
               </div>
@@ -257,7 +258,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                   onChange={(e) =>
                     setFormData({ ...formData, name_en: e.target.value })
                   }
-                  className="input"
+                  className="input text-base"
                   placeholder="e.g: Motorcycle Parts"
                 />
               </div>
@@ -275,13 +276,18 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                       id: e.target.value.toLowerCase().replace(/\s+/g, "-"),
                     })
                   }
-                  className="input"
+                  className="input text-base"
                   placeholder="e.g: motorcycle-parts"
                 />
               </div>
             </div>
-            <div className="flex gap-2">
-              <button type="submit" className="btn btn-primary text-sm">
+
+            {/* Mobile-friendly buttons */}
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                type="submit"
+                className="btn btn-primary text-sm py-3 sm:py-2 flex-1"
+              >
                 {lang === "bn" ? "যোগ করুন" : "Add"}
               </button>
               <button
@@ -290,7 +296,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                   setShowAddCategory(false);
                   setFormData({ name_bn: "", name_en: "", id: "" });
                 }}
-                className="btn btn-secondary text-sm"
+                className="btn btn-secondary text-sm py-3 sm:py-2 flex-1"
               >
                 {lang === "bn" ? "বাতিল" : "Cancel"}
               </button>
@@ -304,16 +310,17 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
             <div className="spinner w-8 h-8 border-4 mx-auto"></div>
           </div>
         ) : (
-          <div className="space-y-4 max-h-96 overflow-y-auto">
+          <div className="space-y-3 max-h-[60vh] sm:max-h-96 overflow-y-auto">
             {categories.map((category) => (
               <div
                 key={category._id}
-                className="border border-gray-200 rounded-lg p-4"
+                className="border-2 border-gray-200 rounded-lg p-3 sm:p-4 hover:border-primary-300 transition-colors"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div>
+                {/* Category Header - Mobile Optimized */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                  <div className="flex-1">
                     <h4
-                      className={`font-semibold text-gray-900 ${
+                      className={`font-semibold text-gray-900 text-base sm:text-lg ${
                         lang === "bn" ? "bengali-text" : ""
                       }`}
                     >
@@ -321,21 +328,25 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                         ? category.name_bn
                         : category.name_en || category.name_bn}
                     </h4>
-                    <p className="text-xs text-gray-500">ID: {category.id}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      ID: {category.id}
+                    </p>
                   </div>
-                  <div className="flex gap-2">
+
+                  {/* Action buttons - Mobile friendly */}
+                  <div className="flex gap-2 flex-wrap">
                     <button
                       onClick={() => {
                         setSelectedCategory(category);
                         setShowAddSubCategory(true);
                       }}
-                      className="text-sm text-blue-600 hover:text-blue-800"
+                      className="px-3 py-2 text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg font-medium transition-colors"
                     >
                       + {lang === "bn" ? "সাব-ক্যাটাগরি" : "Sub-Category"}
                     </button>
                     <button
                       onClick={() => handleDeleteCategory(category._id)}
-                      className="text-sm text-red-600 hover:text-red-800"
+                      className="px-3 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 rounded-lg font-medium transition-colors"
                     >
                       {lang === "bn" ? "মুছুন" : "Delete"}
                     </button>
@@ -345,15 +356,15 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                 {/* Sub-categories */}
                 {category.subCategories &&
                   category.subCategories.length > 0 && (
-                    <div className="ml-4 space-y-2">
-                      <p className="text-xs text-gray-600 font-medium">
+                    <div className="mt-3 pt-3 border-t border-gray-200">
+                      <p className="text-xs text-gray-600 font-medium mb-2">
                         {lang === "bn" ? "সাব-ক্যাটাগরি:" : "Sub-Categories:"}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {category.subCategories.map((sub, index) => (
                           <div
                             key={index}
-                            className="bg-gray-100 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                            className="bg-gray-100 px-3 py-2 rounded-full text-sm flex items-center gap-2 hover:bg-gray-200 transition-colors"
                           >
                             <span
                               className={`text-gray-900 ${
@@ -366,7 +377,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                               onClick={() =>
                                 handleDeleteSubCategory(category, index)
                               }
-                              className="text-red-600 hover:text-red-800"
+                              className="text-red-600 hover:text-red-800 font-bold text-lg leading-none"
                             >
                               ×
                             </button>
@@ -380,78 +391,100 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
           </div>
         )}
 
-        {/* Add Sub-Category Modal */}
+        {/* Add Sub-Category Modal - Mobile Optimized */}
         {showAddSubCategory && selectedCategory && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-              <h3
-                className={`text-lg font-semibold mb-4 ${
-                  lang === "bn" ? "bengali-text" : ""
-                }`}
-              >
-                {lang === "bn" ? "সাব-ক্যাটাগরি যোগ করুন" : "Add Sub-Category"}
-              </h3>
-              <p className="text-sm text-gray-600 mb-4">
-                {lang === "bn" ? "ক্যাটাগরি:" : "Category:"}{" "}
-                <span className="font-semibold">
+          <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+            <div className="bg-white rounded-t-2xl sm:rounded-lg w-full sm:max-w-md max-h-[90vh] overflow-y-auto">
+              {/* Mobile: Drag handle */}
+              <div className="sm:hidden flex justify-center pt-2 pb-1">
+                <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+              </div>
+
+              <div className="p-4 sm:p-6">
+                <h3
+                  className={`text-lg font-semibold mb-3 ${
+                    lang === "bn" ? "bengali-text" : ""
+                  }`}
+                >
                   {lang === "bn"
-                    ? selectedCategory.name_bn
-                    : selectedCategory.name_en || selectedCategory.name_bn}
-                </span>
-              </p>
-              <form onSubmit={handleAddSubCategory} className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {lang === "bn" ? "বাংলা নাম" : "Bangla Name"} *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={subCategoryData.bn}
-                    onChange={(e) =>
-                      setSubCategoryData({
-                        ...subCategoryData,
-                        bn: e.target.value,
-                      })
-                    }
-                    className="input bengali-text"
-                    placeholder="যেমন: ইঞ্জিন পার্টস"
-                  />
+                    ? "সাব-ক্যাটাগরি যোগ করুন"
+                    : "Add Sub-Category"}
+                </h3>
+
+                <div className="bg-blue-50 rounded-lg p-3 mb-4">
+                  <p className="text-sm text-gray-600">
+                    {lang === "bn" ? "ক্যাটাগরি:" : "Category:"}{" "}
+                    <span
+                      className={`font-semibold text-gray-900 ${
+                        lang === "bn" ? "bengali-text" : ""
+                      }`}
+                    >
+                      {lang === "bn"
+                        ? selectedCategory.name_bn
+                        : selectedCategory.name_en || selectedCategory.name_bn}
+                    </span>
+                  </p>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    English Name - {lang === "bn" ? "ঐচ্ছিক" : "Optional"}
-                  </label>
-                  <input
-                    type="text"
-                    value={subCategoryData.en}
-                    onChange={(e) =>
-                      setSubCategoryData({
-                        ...subCategoryData,
-                        en: e.target.value,
-                      })
-                    }
-                    className="input"
-                    placeholder="e.g: Engine Parts"
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button type="submit" className="flex-1 btn btn-primary">
-                    {lang === "bn" ? "যোগ করুন" : "Add"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowAddSubCategory(false);
-                      setSelectedCategory(null);
-                      setSubCategoryData({ bn: "", en: "" });
-                    }}
-                    className="flex-1 btn btn-secondary"
-                  >
-                    {lang === "bn" ? "বাতিল" : "Cancel"}
-                  </button>
-                </div>
-              </form>
+
+                <form onSubmit={handleAddSubCategory} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {lang === "bn" ? "বাংলা নাম" : "Bangla Name"} *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={subCategoryData.bn}
+                      onChange={(e) =>
+                        setSubCategoryData({
+                          ...subCategoryData,
+                          bn: e.target.value,
+                        })
+                      }
+                      className="input bengali-text text-base"
+                      placeholder="যেমন: ইঞ্জিন পার্টস"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      English Name - {lang === "bn" ? "ঐচ্ছিক" : "Optional"}
+                    </label>
+                    <input
+                      type="text"
+                      value={subCategoryData.en}
+                      onChange={(e) =>
+                        setSubCategoryData({
+                          ...subCategoryData,
+                          en: e.target.value,
+                        })
+                      }
+                      className="input text-base"
+                      placeholder="e.g: Engine Parts"
+                    />
+                  </div>
+
+                  {/* Mobile-friendly buttons */}
+                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                    <button
+                      type="submit"
+                      className="flex-1 btn btn-primary py-3 sm:py-2"
+                    >
+                      {lang === "bn" ? "যোগ করুন" : "Add"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowAddSubCategory(false);
+                        setSelectedCategory(null);
+                        setSubCategoryData({ bn: "", en: "" });
+                      }}
+                      className="flex-1 btn btn-secondary py-3 sm:py-2"
+                    >
+                      {lang === "bn" ? "বাতিল" : "Cancel"}
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         )}

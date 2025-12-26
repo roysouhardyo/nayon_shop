@@ -201,9 +201,9 @@ export default function InventoryPage() {
               <LanguageSwitcher />
               <button
                 onClick={() => setShowCategoryModal(true)}
-                className="hidden lg:flex btn btn-secondary text-sm"
+                className="btn btn-secondary text-sm whitespace-nowrap"
               >
-                {lang === "bn" ? "ক্যাটাগরি ম্যানেজ করুন" : "Manage Categories"}
+                {lang === "bn" ? "ক্যাটাগরি" : "Categories"}
               </button>
               <button
                 onClick={() => setShowAddModal(true)}
