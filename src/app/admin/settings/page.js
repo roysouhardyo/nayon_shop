@@ -327,7 +327,7 @@ export default function SettingsPage() {
       <main className="max-w-4xl mx-auto px-4 py-6">
         {/* Tabs */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-          <div className="border-b border-gray-200 overflow-x-auto">
+          <div className="border-b border-gray-200">
             <nav className="flex -mb-px flex-nowrap">
               <button
                 onClick={() => setActiveTab("profile")}
