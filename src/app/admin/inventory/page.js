@@ -205,14 +205,23 @@ export default function InventoryPage() {
               >
                 {lang === "bn" ? "ক্যাটাগরি" : "Categories"}
               </button>
+              {/* Add button - hidden on mobile, shown on desktop */}
               <button
                 onClick={() => setShowAddModal(true)}
-                className="btn btn-primary text-sm whitespace-nowrap"
+                className="hidden lg:inline-flex btn btn-primary text-sm whitespace-nowrap"
               >
                 + {t("add", lang)}
               </button>
             </div>
           </div>
+
+          {/* Mobile Add Button - Full width above search bar */}
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="lg:hidden w-full btn btn-primary text-base mb-3 py-3"
+          >
+            + {t("add", lang)}
+          </button>
 
           <SearchBar onSearch={setSearchTerm} />
 
