@@ -350,16 +350,6 @@ export default function SettingsPage() {
                 {lang === "bn" ? "পাসওয়ার্ড" : "Password"}
               </button>
               <button
-                onClick={() => setActiveTab("admins")}
-                className={`px-6 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
-                  activeTab === "admins"
-                    ? "border-primary-500 text-primary-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                } ${lang === "bn" ? "bengali-text" : ""}`}
-              >
-                {lang === "bn" ? "অ্যাডমিন" : "Admins"}
-              </button>
-              <button
                 onClick={() => setActiveTab("about")}
                 className={`px-6 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
                   activeTab === "about"
@@ -368,6 +358,16 @@ export default function SettingsPage() {
                 } ${lang === "bn" ? "bengali-text" : ""}`}
               >
                 {lang === "bn" ? "সম্পর্কে" : "About"}
+              </button>
+              <button
+                onClick={() => setActiveTab("admins")}
+                className={`px-6 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
+                  activeTab === "admins"
+                    ? "border-primary-500 text-primary-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                } ${lang === "bn" ? "bengali-text" : ""}`}
+              >
+                {lang === "bn" ? "অ্যাডমিন" : "Admins"}
               </button>
             </nav>
           </div>
@@ -875,6 +875,9 @@ export default function SettingsPage() {
             )}
           </div>
         </div>
+
+        {/* Divider */}
+        <div className="my-6 border-t border-gray-300"></div>
 
         {/* Danger Zone */}
         <div className="bg-white rounded-lg shadow-sm border border-red-200">
