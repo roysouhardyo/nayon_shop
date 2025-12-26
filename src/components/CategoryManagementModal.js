@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Modal from "@/components/Modal";
+import { useNotification } from "@/components/NotificationProvider";
 
 export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
+  const notification = useNotification();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddCategory, setShowAddCategory] = useState(false);
@@ -17,6 +19,12 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
   const [subCategoryData, setSubCategoryData] = useState({
     bn: "",
     en: "",
+  });
+  const [deleteConfirm, setDeleteConfirm] = useState({
+    show: false,
+    type: null,
+    item: null,
+    subIndex: null,
   });
 
   useEffect(() => {
@@ -61,19 +69,21 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
       const data = await response.json();
 
       if (data.success) {
-        alert(lang === "bn" ? "ক্যাটাগরি যোগ হয়েছে" : "Category added");
+        notification.success(
+          lang === "bn" ? "ক্যাটাগরি যোগ হয়েছে" : "Category added"
+        );
         setFormData({ name_bn: "", name_en: "", id: "" });
         setShowAddCategory(false);
         fetchCategories();
         onSuccess();
       } else {
-        alert(
+        notification.error(
           data.error || (lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred")
         );
       }
     } catch (error) {
       console.error("Error adding category:", error);
-      alert(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
+      notification.error(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
     }
   };
 
@@ -102,7 +112,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
       const data = await response.json();
 
       if (data.success) {
-        alert(
+        notification.success(
           lang === "bn" ? "সাব-ক্যাটাগরি যোগ হয়েছে" : "Sub-category added"
         );
         setSubCategoryData({ bn: "", en: "" });
@@ -111,19 +121,17 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
         fetchCategories();
         onSuccess();
       } else {
-        alert(
+        notification.error(
           data.error || (lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred")
         );
       }
     } catch (error) {
       console.error("Error adding sub-category:", error);
-      alert(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
+      notification.error(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
     }
   };
 
   const handleDeleteCategory = async (categoryId) => {
-    if (!confirm(lang === "bn" ? "আপনি কি নিশ্চিত?" : "Are you sure?")) return;
-
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(`/api/categories?id=${categoryId}`, {
@@ -134,25 +142,24 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
       const data = await response.json();
 
       if (data.success) {
-        alert(
+        notification.success(
           lang === "bn" ? "ক্যাটাগরি মুছে ফেলা হয়েছে" : "Category deleted"
         );
         fetchCategories();
         onSuccess();
       } else {
-        alert(
+        notification.error(
           data.error || (lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred")
         );
       }
     } catch (error) {
       console.error("Error deleting category:", error);
-      alert(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
+      notification.error(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
     }
+    setDeleteConfirm({ show: false, type: null, item: null, subIndex: null });
   };
 
   const handleDeleteSubCategory = async (category, subIndex) => {
-    if (!confirm(lang === "bn" ? "আপনি কি নিশ্চিত?" : "Are you sure?")) return;
-
     try {
       const token = localStorage.getItem("authToken");
       const updatedSubCategories = category.subCategories.filter(
@@ -174,7 +181,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
       const data = await response.json();
 
       if (data.success) {
-        alert(
+        notification.success(
           lang === "bn"
             ? "সাব-ক্যাটাগরি মুছে ফেলা হয়েছে"
             : "Sub-category deleted"
@@ -182,14 +189,15 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
         fetchCategories();
         onSuccess();
       } else {
-        alert(
+        notification.error(
           data.error || (lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred")
         );
       }
     } catch (error) {
       console.error("Error deleting sub-category:", error);
-      alert(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
+      notification.error(lang === "bn" ? "ত্রুটি হয়েছে" : "Error occurred");
     }
+    setDeleteConfirm({ show: false, type: null, item: null, subIndex: null });
   };
 
   return (
@@ -345,7 +353,14 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                       + {lang === "bn" ? "সাব-ক্যাটাগরি" : "Sub-Category"}
                     </button>
                     <button
-                      onClick={() => handleDeleteCategory(category._id)}
+                      onClick={() =>
+                        setDeleteConfirm({
+                          show: true,
+                          type: "category",
+                          item: category,
+                          subIndex: null,
+                        })
+                      }
                       className="px-3 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 rounded-lg font-medium transition-colors"
                     >
                       {lang === "bn" ? "মুছুন" : "Delete"}
@@ -375,7 +390,12 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                             </span>
                             <button
                               onClick={() =>
-                                handleDeleteSubCategory(category, index)
+                                setDeleteConfirm({
+                                  show: true,
+                                  type: "subcategory",
+                                  item: category,
+                                  subIndex: index,
+                                })
                               }
                               className="text-red-600 hover:text-red-800 font-bold text-lg leading-none"
                             >
@@ -496,6 +516,65 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm.show && (
+          <Modal
+            isOpen={true}
+            onClose={() =>
+              setDeleteConfirm({
+                show: false,
+                type: null,
+                item: null,
+                subIndex: null,
+              })
+            }
+            title={lang === "bn" ? "নিশ্চিত করুন" : "Confirm Delete"}
+            size="sm"
+          >
+            <div className="space-y-4">
+              <p
+                className={`text-gray-700 ${
+                  lang === "bn" ? "bengali-text" : ""
+                }`}
+              >
+                {lang === "bn"
+                  ? "আপনি কি নিশ্চিত যে এটি মুছে ফেলতে চান?"
+                  : "Are you sure you want to delete this?"}
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() =>
+                    setDeleteConfirm({
+                      show: false,
+                      type: null,
+                      item: null,
+                      subIndex: null,
+                    })
+                  }
+                  className="flex-1 btn btn-secondary"
+                >
+                  {lang === "bn" ? "বাতিল" : "Cancel"}
+                </button>
+                <button
+                  onClick={() => {
+                    if (deleteConfirm.type === "category") {
+                      handleDeleteCategory(deleteConfirm.item._id);
+                    } else if (deleteConfirm.type === "subcategory") {
+                      handleDeleteSubCategory(
+                        deleteConfirm.item,
+                        deleteConfirm.subIndex
+                      );
+                    }
+                  }}
+                  className="flex-1 btn btn-danger"
+                >
+                  {lang === "bn" ? "মুছুন" : "Delete"}
+                </button>
+              </div>
+            </div>
+          </Modal>
         )}
       </div>
     </Modal>
