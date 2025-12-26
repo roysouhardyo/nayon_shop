@@ -396,17 +396,17 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
           <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
             <div
               className="bg-white rounded-t-2xl sm:rounded-lg w-full sm:max-w-md flex flex-col"
-              style={{ maxHeight: "80vh" }}
+              style={{ maxHeight: "70vh" }}
             >
               {/* Mobile: Drag handle */}
-              <div className="sm:hidden flex justify-center pt-3 pb-2 flex-shrink-0">
+              <div className="sm:hidden flex justify-center pt-2 pb-1 flex-shrink-0">
                 <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
               </div>
 
               {/* Scrollable content area */}
-              <div className="overflow-y-auto flex-1 px-5 sm:px-6">
+              <div className="overflow-y-auto flex-1 px-4 sm:px-6">
                 <h3
-                  className={`text-lg font-semibold mb-4 pt-2 ${
+                  className={`text-base sm:text-lg font-semibold mb-3 pt-1 ${
                     lang === "bn" ? "bengali-text" : ""
                   }`}
                 >
@@ -415,8 +415,8 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                     : "Add Sub-Category"}
                 </h3>
 
-                <div className="bg-blue-50 rounded-lg p-3 mb-5">
-                  <p className="text-sm text-gray-600">
+                <div className="bg-blue-50 rounded-lg p-2.5 mb-3">
+                  <p className="text-xs sm:text-sm text-gray-600">
                     {lang === "bn" ? "ক্যাটাগরি:" : "Category:"}{" "}
                     <span
                       className={`font-semibold text-gray-900 ${
@@ -432,10 +432,10 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
 
                 <form
                   onSubmit={handleAddSubCategory}
-                  className="space-y-4 pb-4"
+                  className="space-y-3 pb-3"
                 >
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                       {lang === "bn" ? "বাংলা নাম" : "Bangla Name"} *
                     </label>
                     <input
@@ -453,7 +453,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                       English Name - {lang === "bn" ? "ঐচ্ছিক" : "Optional"}
                     </label>
                     <input
@@ -473,11 +473,11 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
               </div>
 
               {/* Fixed button area at bottom */}
-              <div className="flex-shrink-0 border-t border-gray-200 p-4 sm:p-5 bg-white rounded-b-2xl sm:rounded-b-lg">
-                <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-shrink-0 border-t border-gray-200 p-3 sm:p-4 bg-white rounded-b-2xl sm:rounded-b-lg">
+                <div className="flex flex-col sm:flex-row gap-2.5">
                   <button
                     onClick={handleAddSubCategory}
-                    className="flex-1 btn btn-primary py-3 sm:py-2 text-base font-medium"
+                    className="flex-1 btn btn-primary py-2.5 sm:py-2 text-sm sm:text-base font-medium"
                   >
                     {lang === "bn" ? "যোগ করুন" : "Add"}
                   </button>
@@ -488,7 +488,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                       setSelectedCategory(null);
                       setSubCategoryData({ bn: "", en: "" });
                     }}
-                    className="flex-1 btn btn-secondary py-3 sm:py-2 text-base font-medium"
+                    className="flex-1 btn btn-secondary py-2.5 sm:py-2 text-sm sm:text-base font-medium"
                   >
                     {lang === "bn" ? "বাতিল" : "Cancel"}
                   </button>
