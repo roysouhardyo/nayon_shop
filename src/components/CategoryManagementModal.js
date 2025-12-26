@@ -394,15 +394,19 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
         {/* Add Sub-Category Modal - Mobile Optimized */}
         {showAddSubCategory && selectedCategory && (
           <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-            <div className="bg-white rounded-t-2xl sm:rounded-lg w-full sm:max-w-md max-h-[85vh] overflow-y-auto">
+            <div
+              className="bg-white rounded-t-2xl sm:rounded-lg w-full sm:max-w-md flex flex-col"
+              style={{ maxHeight: "80vh" }}
+            >
               {/* Mobile: Drag handle */}
-              <div className="sm:hidden flex justify-center pt-3 pb-2">
+              <div className="sm:hidden flex justify-center pt-3 pb-2 flex-shrink-0">
                 <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
               </div>
 
-              <div className="p-5 sm:p-6 pb-6 sm:pb-6">
+              {/* Scrollable content area */}
+              <div className="overflow-y-auto flex-1 px-5 sm:px-6">
                 <h3
-                  className={`text-lg font-semibold mb-4 ${
+                  className={`text-lg font-semibold mb-4 pt-2 ${
                     lang === "bn" ? "bengali-text" : ""
                   }`}
                 >
@@ -426,7 +430,10 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                   </p>
                 </div>
 
-                <form onSubmit={handleAddSubCategory} className="space-y-4">
+                <form
+                  onSubmit={handleAddSubCategory}
+                  className="space-y-4 pb-4"
+                >
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       {lang === "bn" ? "বাংলা নাম" : "Bangla Name"} *
@@ -462,28 +469,30 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                       placeholder="e.g: Engine Parts"
                     />
                   </div>
-
-                  {/* Mobile-friendly buttons - with extra spacing */}
-                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                    <button
-                      type="submit"
-                      className="flex-1 btn btn-primary py-3 sm:py-2 text-base font-medium"
-                    >
-                      {lang === "bn" ? "যোগ করুন" : "Add"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowAddSubCategory(false);
-                        setSelectedCategory(null);
-                        setSubCategoryData({ bn: "", en: "" });
-                      }}
-                      className="flex-1 btn btn-secondary py-3 sm:py-2 text-base font-medium"
-                    >
-                      {lang === "bn" ? "বাতিল" : "Cancel"}
-                    </button>
-                  </div>
                 </form>
+              </div>
+
+              {/* Fixed button area at bottom */}
+              <div className="flex-shrink-0 border-t border-gray-200 p-4 sm:p-5 bg-white rounded-b-2xl sm:rounded-b-lg">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={handleAddSubCategory}
+                    className="flex-1 btn btn-primary py-3 sm:py-2 text-base font-medium"
+                  >
+                    {lang === "bn" ? "যোগ করুন" : "Add"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAddSubCategory(false);
+                      setSelectedCategory(null);
+                      setSubCategoryData({ bn: "", en: "" });
+                    }}
+                    className="flex-1 btn btn-secondary py-3 sm:py-2 text-base font-medium"
+                  >
+                    {lang === "bn" ? "বাতিল" : "Cancel"}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
