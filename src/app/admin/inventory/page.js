@@ -186,7 +186,7 @@ export default function InventoryPage() {
               </button>
               <div>
                 <h1
-                  className={`text-2xl font-bold text-gray-900 ${
+                  className={`text-xl font-bold text-gray-900 ${
                     lang === "bn" ? "bengali-text" : ""
                   }`}
                 >
