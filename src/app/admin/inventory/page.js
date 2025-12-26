@@ -227,7 +227,7 @@ export default function InventoryPage() {
 
           {/* View Toggle */}
           <div className="flex items-center justify-between mt-4">
-            <div className="flex gap-2 overflow-x-auto">
+            <div className="flex gap-2 overflow-x-auto pb-2">
               <button
                 onClick={() => setSelectedCategory("")}
                 className={`px-3 py-1.5 rounded-lg text-sm whitespace-nowrap ${
