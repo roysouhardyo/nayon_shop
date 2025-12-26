@@ -350,16 +350,6 @@ export default function SettingsPage() {
                 {lang === "bn" ? "পাসওয়ার্ড" : "Password"}
               </button>
               <button
-                onClick={() => setActiveTab("about")}
-                className={`px-6 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
-                  activeTab === "about"
-                    ? "border-primary-500 text-primary-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                } ${lang === "bn" ? "bengali-text" : ""}`}
-              >
-                {lang === "bn" ? "সম্পর্কে" : "About"}
-              </button>
-              <button
                 onClick={() => setActiveTab("admins")}
                 className={`px-6 py-3 text-sm font-medium border-b-2 whitespace-nowrap ${
                   activeTab === "admins"
@@ -766,110 +756,6 @@ export default function SettingsPage() {
                       </table>
                     </div>
                   )}
-                </div>
-              </div>
-            )}
-
-            {/* About Tab */}
-            {activeTab === "about" && (
-              <div>
-                <h2
-                  className={`text-lg font-semibold text-gray-900 mb-4 ${
-                    lang === "bn" ? "bengali-text" : ""
-                  }`}
-                >
-                  {lang === "bn" ? "অ্যাপ সম্পর্কে" : "About App"}
-                </h2>
-
-                <div className="space-y-4">
-                  <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
-                    <h3
-                      className={`font-semibold text-primary-900 mb-2 ${
-                        lang === "bn" ? "bengali-text" : ""
-                      }`}
-                    >
-                      {lang === "bn" ? "নায়ন শপ" : "Nayon Shop"}
-                    </h3>
-                    <p
-                      className={`text-sm text-primary-800 ${
-                        lang === "bn" ? "bengali-text" : ""
-                      }`}
-                    >
-                      {lang === "bn"
-                        ? "মেশিনারি এন্ড হার্ডওয়্যার ইনভেন্টরি ম্যানেজমেন্ট সিস্টেম"
-                        : "Machinery & Hardware Inventory Management System"}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <p
-                        className={`text-sm text-gray-600 ${
-                          lang === "bn" ? "bengali-text" : ""
-                        }`}
-                      >
-                        {lang === "bn" ? "সংস্করণ" : "Version"}
-                      </p>
-                      <p className="text-lg font-semibold text-gray-900">
-                        1.0.0
-                      </p>
-                    </div>
-
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <p
-                        className={`text-sm text-gray-600 ${
-                          lang === "bn" ? "bengali-text" : ""
-                        }`}
-                      >
-                        {lang === "bn" ? "ভাষা" : "Language"}
-                      </p>
-                      <p className="text-lg font-semibold text-gray-900">
-                        {lang === "bn" ? "বাংলা/English" : "Bangla/English"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4
-                      className={`font-semibold text-blue-900 mb-2 ${
-                        lang === "bn" ? "bengali-text" : ""
-                      }`}
-                    >
-                      {lang === "bn" ? "বৈশিষ্ট্য" : "Features"}
-                    </h4>
-                    <ul
-                      className={`text-sm text-blue-800 space-y-1 ${
-                        lang === "bn" ? "bengali-text" : ""
-                      }`}
-                    >
-                      <li>
-                        ✓{" "}
-                        {lang === "bn"
-                          ? "দ্বিভাষিক সমর্থন (বাংলা/ইংরেজি)"
-                          : "Bilingual support (Bangla/English)"}
-                      </li>
-                      <li>
-                        ✓{" "}
-                        {lang === "bn"
-                          ? "ইনভেন্টরি ম্যানেজমেন্ট"
-                          : "Inventory management"}
-                      </li>
-                      <li>
-                        ✓{" "}
-                        {lang === "bn" ? "বিক্রয় রেকর্ডিং" : "Sales recording"}
-                      </li>
-                      <li>
-                        ✓ {lang === "bn" ? "স্টক ট্র্যাকিং" : "Stock tracking"}
-                      </li>
-                      <li>
-                        ✓ {lang === "bn" ? "পিডিএফ রিপোর্ট" : "PDF reports"}
-                      </li>
-                      <li>
-                        ✓{" "}
-                        {lang === "bn" ? "মোবাইল-ফ্রেন্ডলি" : "Mobile-friendly"}
-                      </li>
-                    </ul>
-                  </div>
                 </div>
               </div>
             )}
