@@ -22,7 +22,7 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLanguage}
-      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-colors touch-target"
+      className="btn btn-secondary text-sm whitespace-nowrap flex items-center gap-1.5"
       aria-label="Switch Language"
     >
       <span className="text-sm font-medium">
@@ -38,19 +38,6 @@ export default function LanguageSwitcher() {
           </>
         )}
       </span>
-      <svg
-        className="w-4 h-4 text-gray-500"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-        />
-      </svg>
     </button>
   );
 }
