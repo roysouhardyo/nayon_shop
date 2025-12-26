@@ -71,7 +71,7 @@ export default function SalesPage() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-1 mr-2">
               <button
                 onClick={() => router.push("/admin")}
                 className="lg:hidden text-gray-600"
@@ -92,22 +92,23 @@ export default function SalesPage() {
               </button>
               <div>
                 <h1
-                  className={`text-2xl font-bold text-gray-900 ${
+                  className={`text-base font-bold text-gray-900 ${
                     lang === "bn" ? "bengali-text" : ""
                   }`}
                 >
                   {t("sales", lang)}
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs text-gray-600">
                   {lang === "bn" ? "বিক্রয় রেকর্ড করুন" : "Record sales"}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
+              {/* Record Sale button - hidden on mobile, shown on desktop */}
               <button
                 onClick={() => setShowSaleModal(true)}
-                className="btn btn-primary text-sm"
+                className="hidden lg:inline-flex btn btn-primary text-sm"
               >
                 + {t("recordSale", lang)}
               </button>
@@ -118,6 +119,14 @@ export default function SalesPage() {
 
       {/* Summary Cards */}
       <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* Mobile Record Sale Button - Full width above summary cards */}
+        <button
+          onClick={() => setShowSaleModal(true)}
+          className="lg:hidden w-full btn btn-primary text-base mb-4 py-3"
+        >
+          + {t("recordSale", lang)}
+        </button>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
