@@ -394,15 +394,15 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
         {/* Add Sub-Category Modal - Mobile Optimized */}
         {showAddSubCategory && selectedCategory && (
           <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
-            <div className="bg-white rounded-t-2xl sm:rounded-lg w-full sm:max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-t-2xl sm:rounded-lg w-full sm:max-w-md max-h-[85vh] overflow-y-auto">
               {/* Mobile: Drag handle */}
-              <div className="sm:hidden flex justify-center pt-2 pb-1">
+              <div className="sm:hidden flex justify-center pt-3 pb-2">
                 <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
               </div>
 
-              <div className="p-4 sm:p-6">
+              <div className="p-5 sm:p-6 pb-6 sm:pb-6">
                 <h3
-                  className={`text-lg font-semibold mb-3 ${
+                  className={`text-lg font-semibold mb-4 ${
                     lang === "bn" ? "bengali-text" : ""
                   }`}
                 >
@@ -411,7 +411,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                     : "Add Sub-Category"}
                 </h3>
 
-                <div className="bg-blue-50 rounded-lg p-3 mb-4">
+                <div className="bg-blue-50 rounded-lg p-3 mb-5">
                   <p className="text-sm text-gray-600">
                     {lang === "bn" ? "ক্যাটাগরি:" : "Category:"}{" "}
                     <span
@@ -428,7 +428,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
 
                 <form onSubmit={handleAddSubCategory} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       {lang === "bn" ? "বাংলা নাম" : "Bangla Name"} *
                     </label>
                     <input
@@ -446,7 +446,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       English Name - {lang === "bn" ? "ঐচ্ছিক" : "Optional"}
                     </label>
                     <input
@@ -463,11 +463,11 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                     />
                   </div>
 
-                  {/* Mobile-friendly buttons */}
-                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                  {/* Mobile-friendly buttons - with extra spacing */}
+                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
                     <button
                       type="submit"
-                      className="flex-1 btn btn-primary py-3 sm:py-2"
+                      className="flex-1 btn btn-primary py-3 sm:py-2 text-base font-medium"
                     >
                       {lang === "bn" ? "যোগ করুন" : "Add"}
                     </button>
@@ -478,7 +478,7 @@ export default function CategoryManagementModal({ lang, onClose, onSuccess }) {
                         setSelectedCategory(null);
                         setSubCategoryData({ bn: "", en: "" });
                       }}
-                      className="flex-1 btn btn-secondary py-3 sm:py-2"
+                      className="flex-1 btn btn-secondary py-3 sm:py-2 text-base font-medium"
                     >
                       {lang === "bn" ? "বাতিল" : "Cancel"}
                     </button>
