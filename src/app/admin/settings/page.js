@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentLanguage, t } from "@/lib/i18n";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Modal from "@/components/Modal";
 import { useNotification } from "@/components/NotificationProvider";
 
 export default function SettingsPage() {
@@ -32,6 +33,8 @@ export default function SettingsPage() {
   const [adminsList, setAdminsList] = useState([]);
   const [adminsLoading, setAdminsLoading] = useState(false);
   const [deleteAdminId, setDeleteAdminId] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [adminToDelete, setAdminToDelete] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -222,20 +225,17 @@ export default function SettingsPage() {
     }
   };
 
-  const handleDeleteAdmin = async (adminId) => {
-    if (
-      !confirm(
-        lang === "bn"
-          ? "আপনি কি এই অ্যাডমিন মুছতে চান?"
-          : "Are you sure you want to delete this admin?"
-      )
-    ) {
-      return;
-    }
+  const handleDeleteClick = (admin) => {
+    setAdminToDelete(admin);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteAdmin = async () => {
+    if (!adminToDelete) return;
 
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch(`/api/admins/${adminId}`, {
+      const response = await fetch(`/api/admins/${adminToDelete._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -248,6 +248,8 @@ export default function SettingsPage() {
             ? "অ্যাডমিন মুছে ফেলা হয়েছে"
             : "Admin deleted successfully"
         );
+        setShowDeleteConfirm(false);
+        setAdminToDelete(null);
         fetchAdmins(); // Refresh the list
       } else {
         const data = await response.json();
@@ -741,7 +743,7 @@ export default function SettingsPage() {
                               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 {admin._id !== adminInfo?.id && (
                                   <button
-                                    onClick={() => handleDeleteAdmin(admin._id)}
+                                    onClick={() => handleDeleteClick(admin)}
                                     className={`text-red-600 hover:text-red-900 ${
                                       lang === "bn" ? "bengali-text" : ""
                                     }`}
@@ -803,6 +805,56 @@ export default function SettingsPage() {
           </div>
         </div>
       </main>
+
+      {/* Delete Admin Confirmation Modal */}
+      {showDeleteConfirm && adminToDelete && (
+        <Modal
+          isOpen={true}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setAdminToDelete(null);
+          }}
+          title={lang === "bn" ? "নিশ্চিত করুন" : "Confirm Delete"}
+          size="sm"
+        >
+          <div className="space-y-4">
+            <p
+              className={`text-gray-700 ${lang === "bn" ? "bengali-text" : ""}`}
+            >
+              {lang === "bn"
+                ? "আপনি কি নিশ্চিত যে এই অ্যাডমিন মুছে ফেলতে চান?"
+                : "Are you sure you want to delete this admin?"}
+            </p>
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p
+                className={`font-semibold text-gray-900 ${
+                  lang === "bn" ? "bengali-text" : ""
+                }`}
+              >
+                {adminToDelete.name}
+              </p>
+              <p className="text-sm text-gray-500">{adminToDelete.email}</p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setAdminToDelete(null);
+                }}
+                className="flex-1 btn btn-secondary"
+              >
+                {t("cancel", lang)}
+              </button>
+              <button
+                onClick={handleDeleteAdmin}
+                className="flex-1 btn btn-danger"
+              >
+                {t("delete", lang)}
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
